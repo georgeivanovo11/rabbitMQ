@@ -1,6 +1,7 @@
 var amqp = require('amqplib/callback_api');
 
 let service = null;
+
 function start() {
   amqp.connect("amqp://user:bitnami@rabbitmq:5672/", function(err, conn) {
     if (err) {
@@ -12,11 +13,16 @@ function start() {
       service = ch;
       console.log("Channel connected");
 
-      const q = 'cars';
-      ch.assertQueue(q, {durable: false});
+      const q = 'task_queue';
+      ch.assertQueue(q, {durable: true});
+      ch.prefetch(1);
       ch.consume(q, function(msg) {
         console.log(" [x] Received %s", msg.content.toString());
-      }, {noAck: true});
+        setTimeout(function() {
+          console.log(" [x] Done");
+          ch.ack(msg);
+        }, 3000);
+      }, {noAck: false});
     });
   });
 }

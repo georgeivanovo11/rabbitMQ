@@ -26,7 +26,7 @@ app.use((err, req, res, next) =>
   res.json(err);
 });
 
-const PORT = 4000;
+const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });

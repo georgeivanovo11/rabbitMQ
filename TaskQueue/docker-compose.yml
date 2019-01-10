@@ -11,13 +11,23 @@ services:
     networks:
       - app-network
 
-  consumer:
-    container_name: consumer
+  consumer1:
+    container_name: consumer1
     build:
-      context: ./consumer
-      dockerfile: consumer.dockerfile
+      context: ./consumer1
+      dockerfile: consumer1.dockerfile
     ports:
-      - '4000:4000'
+      - '4001:3000'
+    networks:
+      - app-network
+
+  consumer2:
+    container_name: consumer2
+    build:
+      context: ./consumer2
+      dockerfile: consumer2.dockerfile
+    ports:
+      - '4002:3000'
     networks:
       - app-network
 
