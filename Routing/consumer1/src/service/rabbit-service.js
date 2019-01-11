@@ -15,7 +15,9 @@ function start() {
 
       ch.assertQueue('', {exclusive: true}, function(err, res) {
         console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", res.queue);
+
         ch.bindQueue(res.queue, exchange, 'consumer1');
+        ch.bindQueue(res.queue, exchange, 'firstConsumer');
 
         ch.consume(res.queue, function(msg) {
             console.log(" [x] Received: %s", msg.content.toString());
