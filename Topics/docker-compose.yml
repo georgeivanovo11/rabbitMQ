@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+  producer:
+    container_name: producer
+    build:
+      context: ./producer
+      dockerfile: producer.dockerfile
+    ports:
+      - '3000:3000'
+    networks:
+      - app-network
+
+  consumer1:
+    container_name: consumer1
+    build:
+      context: ./consumer1
+      dockerfile: consumer1.dockerfile
+    ports:
+      - '4001:3000'
+    networks:
+      - app-network
+
+  consumer2:
+    container_name: consumer2
+    build:
+      context: ./consumer2
+      dockerfile: consumer2.dockerfile
+    ports:
+      - '4002:3000'
+    networks:
+      - app-network
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: bitnami/rabbitmq:latest
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    networks:
+      - app-network
+    volumes:
+    - mqdata:/bitnami
+          
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mqdata:
+    driver: local
